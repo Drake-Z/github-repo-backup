@@ -1,0 +1,40 @@
+language: python
+
+python:
+    - "3.6"
+
+notifications:
+  email: false
+
+branches:
+  only:
+    - blog-source
+
+before_install:
+    - echo $HELLO!
+    - sudo apt-get update
+
+install:
+    - sudo pip install yaml
+
+script:
+    - pip list
+    - git config --global user.email "$GIT_EMAIL"
+    - git config --global user.name "$GIT_NAME"
+    - git config --global push.default simple
+    - git checkout blog-source
+    # depth用于指定克隆深度，为1即表示只克隆最近一次commit.
+    - git clone --depth 1 https://github.com/Drake-Z/pelican-bootstrap3 bootstrap3
+    - git clone --recursive --depth 1 https://github.com/getpelican/pelican-plugins pelican-plugins
+    - git clone -b master --depth 1 https://$GH_TOKEN@github.com/$GH_REPO_SLUG output
+    # 删除 output 文件夹内 README.md 以外的文件
+    - env SITEURL="drake-z.github.io" pelican content
+
+after_success:
+    # 输出最后一次 commit 到文件
+    - git show -1 -s --format="$(echo %B$'\n'%H)" > commit-msg.tmp
+    - cd output
+    - git add -A .
+    # 加载 blog-source commit 文件
+    - git commit -F ../commit-msg.tmp
+    - git push --force --quiet "https://$GH_TOKEN@github.com/$GH_REPO_SLUG" master:master
