@@ -28,6 +28,7 @@ script:
     - cd repos-backup
     - shopt -s extglob
     - echo rm -rf ./!(.git|README.md|*.zip)
+    - echo rm -rf ./.git/modules/*
     - cd ..
     - python manage.py
     # 输出最后一次 commit 到文件
