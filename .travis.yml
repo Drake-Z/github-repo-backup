@@ -21,7 +21,6 @@ install:
     - sudo git lfs install
 
 script:
-    - git lfs track "*.zip"
     - git config --global user.email "$GIT_EMAIL"
     - git config --global user.name "$GIT_NAME"
     - git config --global push.default simple
@@ -36,6 +35,7 @@ script:
     # 输出最后一次 commit 到文件
     - git show -1 -s --format="$(echo %B$'\n'%H)" > commit-msg.tmp
     - cd repos-backup
+    - git lfs track "*.zip"
     - git add -A .
     - git commit -F ../commit-msg.tmp
     - git push --force --quiet "https://$GH_TOKEN@github.com/$GH_REPO_SLUG" repos-backup:repos-backup
