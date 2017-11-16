@@ -15,8 +15,9 @@ before_install:
     - sudo apt-get update
 
 install:
-    - sudo python -m pip install -r requirements.txt
+    - sudo /home/travis/virtualenv/python3.6.3/bin/python -m pip install -r requirements.txt
     - pip list
+    - ls
 
 script:
     - git config --global user.email "$GIT_EMAIL"
@@ -26,7 +27,7 @@ script:
     - git clone --recursive --depth 1 -b repos-backup https://$GH_TOKEN@github.com/$GH_REPO_SLUG repos-backup
     - cd repos-backup
     # 第一次使用
-    - python manage.py
+    - python ../manage.py
     # 以后更新的时候使用
     # git submodule update --recursive --remote
     - cd ..
