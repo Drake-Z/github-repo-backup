@@ -36,7 +36,8 @@ script:
     - cd repos-backup
     - sudo git lfs install
     - git lfs track "*.zip"
-    - git add -A .
+    - git config --local -l
+    - git add .
     - git commit -F ../commit-msg.tmp
     - git push --force --quiet "https://$GH_TOKEN@github.com/$GH_REPO_SLUG" repos-backup:repos-backup
 
