@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-16 15:28:53
+# @Last Modified time: 2017-11-16 15:45:27
 
 import os
 import sys
@@ -108,7 +108,6 @@ def create_logger(debug):
     level = [logging.INFO, logging.DEBUG][debug]
     logger.setLevel(level)
 
-if __name__ == "__main__":
-    repo_list = get_repo_list()
-    create_logger(debug=1)
-    clone_repo(repo_list=repo_list)
+repo_list = get_repo_list()
+create_logger(debug=1)
+clone_repo(repo_list=repo_list)
