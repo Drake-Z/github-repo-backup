@@ -31,8 +31,6 @@ script:
     # 以后更新的时候使用
     # git submodule update --recursive --remote
     - cd ..
-
-after_success:
     # 输出最后一次 commit 到文件
     - git show -1 -s --format="$(echo %B$'\n'%H)" > commit-msg.tmp
     - cd repos-backup
@@ -40,3 +38,5 @@ after_success:
     # 加载 repos-source commit 文件
     - git commit -F ../commit-msg.tmp
     - git push --force --quiet "https://$GH_TOKEN@github.com/$GH_REPO_SLUG" repos-backup:repos-backup
+
+# after_success:
