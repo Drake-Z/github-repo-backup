@@ -15,10 +15,8 @@ before_install:
     - sudo apt-get update
 
 install:
+    - sudo python pip install -r requirements.txt
     - pip list
-    - sudo pip install -r requirements.txt
-    - pip list
-    - ls
 
 script:
     - git config --global user.email "$GIT_EMAIL"
