@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-16 23:13:23
+# @Last Modified time: 2017-11-16 23:17:40
 
 import os
 import sys
@@ -73,7 +73,7 @@ def clone_repo(repo_list):
                ).format(repo_url=repo_url, dir_name=dir_name)
         excute(cmd=cmd)
 
-        dir_path = "./repos-backup/{dir_name}".format(dir_name=dir_name)
+        dir_path = "repos-backup/{dir_name}".format(dir_name=dir_name)
         logger.debug("clone {dir_name} other branch".format(dir_name=dir_name))
         branchs, sha1 = match_branch(dir_path=dir_path)
         try:
