@@ -18,8 +18,10 @@ install:
     - sudo /home/travis/virtualenv/python3.6.3/bin/python -m pip install -r requirements.txt
     - pip list
     - ls
+    - sudo git lfs install
 
 script:
+    - git lfs track "*.zip"
     - git config --global user.email "$GIT_EMAIL"
     - git config --global user.name "$GIT_NAME"
     - git config --global push.default simple
