@@ -24,7 +24,7 @@ script:
     - git config --global user.name "$GIT_NAME"
     - git config --global push.default simple
     - git checkout repos-source
-    - git clone --recursive --depth 1 -b repos-backup https://$GH_TOKEN@github.com/$GH_REPO_SLUG repos-backup
+    - git clone --recursive --depth 2 -b repos-backup https://$GH_TOKEN@github.com/$GH_REPO_SLUG repos-backup
     - cd repos-backup
     # 第一次使用
     - python ../manage.py
