@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-16 17:52:24
+# @Last Modified time: 2017-11-16 18:07:44
 
 import os
 import sys
@@ -40,6 +40,7 @@ def match_branch(dir_name):
     :type return: list
     :return: ["origin/xxxxx",...]
     """
+    logger.debug("GitPython 加载 {dir_name}".format(dir_name=dir_name))
     repo = Repo("{dir_name}/".format(dir_name=dir_name))
     git = repo.git
     branch_str = git.branch("-a")
