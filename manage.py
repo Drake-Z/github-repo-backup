@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-16 16:50:57
+# @Last Modified time: 2017-11-16 17:52:24
 
 import os
 import sys
@@ -21,6 +21,7 @@ def excute(cmd):
     """
     logger.debug(cmd)
     p = subprocess.Popen(cmd,
+                         shell=True,
                          bufsize=0,  # 0=unbuffered, 1=line-buffered, else buffer-size
                          stdout=subprocess.PIPE)
     # p.poll() 实时查询 程序运行是否完毕
