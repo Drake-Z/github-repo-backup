@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-16 15:45:27
+# @Last Modified time: 2017-11-16 15:47:34
 
 import os
 import sys
@@ -85,7 +85,7 @@ def get_repo_list():
     :type return: list
     :return: [(repo_name, repo_url),...]
     """
-    repo_list_path = os.path.split(sys.argv[0])[0] + "\\repo_list.yaml"
+    repo_list_path = os.path.split(sys.argv[0])[0] + "/repo_list.yaml"
     with open(repo_list_path, "r", encoding="utf-8") as file:
         content = yaml.load(file)
         repo_list = [(".".join(z.split("/")[-2:]), z) for z in content]
