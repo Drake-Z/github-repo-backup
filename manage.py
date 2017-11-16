@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-16 18:07:44
+# @Last Modified time: 2017-11-16 22:58:22
 
 import os
 import sys
@@ -10,6 +10,7 @@ import yaml
 import subprocess
 import logging
 from git import Repo
+from shutil import make_archive
 
 
 def excute(cmd):
@@ -33,21 +34,27 @@ def excute(cmd):
     return None
 
 
-def match_branch(dir_name):
+def match_branch(dir_path):
     """
     输出 git 仓库的所有本地 HEAD 以外的远程分支名列表
-    :param dir_name: git 仓库路径
+    :param dir_path: git 仓库路径
     :type return: list
     :return: ["origin/xxxxx",...]
     """
-    logger.debug("GitPython 加载 {dir_name}".format(dir_name=dir_name))
-    repo = Repo("{dir_name}/".format(dir_name=dir_name))
+    def condition(z):
+        if "->" not in z and "issue" not in z and "remotes/" in z:
+            return True
+        else:
+            return False
+    logger.debug("GitPython 加载 {dir_name}".format(dir_name=dir_path.split("/")[-1]))
+    repo = Repo("{dir_path}".format(dir_path=dir_path))
     git = repo.git
+    sha1 = repo.commit("HEAD").hexsha[:7]
     branch_str = git.branch("-a")
     logger.debug("repo 所有 branch:\n{str}".format(str=branch_str))
-    str_list = [z[10:] for z in branch_str.split("\n") if "->" not in z and "remotes/" in z]
+    str_list = [z[10:] for z in branch_str.split("\n") if condition(z)]
     logger.debug("得到所有远程 branch:\n{str_list}".format(str_list=str_list))
-    return str_list
+    return str_list, sha1
 
 
 def clone_repo(repo_list):
@@ -57,17 +64,24 @@ def clone_repo(repo_list):
     :type return: NoneType
     :return: None
     """
+    assert isinstance(repo_list, list)
     logger.debug("repo_list:\n" + yaml.dump(repo_list, default_flow_style=False) + "\n")
     logger.info("将 clone 以下 repo:\n" + "\n".join([z[0] for z in repo_list]))
     for dir_name, repo_url in repo_list:
         logger.info("clone repo: {dir_name}".format(dir_name=dir_name))
-        cmd = ("git submodule add --force {repo_url} {dir_name}"
+        cmd = ("git submodule add --force {repo_url} ./repos-backup/{dir_name}"
                ).format(repo_url=repo_url, dir_name=dir_name)
         excute(cmd=cmd)
 
+        dir_path = "./repos-backup/{dir_name}".format(dir_name=dir_name)
         logger.debug("clone {dir_name} other branch".format(dir_name=dir_name))
-        branchs = match_branch(dir_name=dir_name)
-        os.chdir("{dir_name}/".format(dir_name=dir_name))
+        branchs, sha1 = match_branch(dir_path=dir_path)
+        try:
+            os.chdir(dir_path)
+        except FileNotFoundError:
+            logger.info("{dir_name} 文件夹不存在！！克隆 {dir_name} 失败\n\n".format(dir_name=dir_name))
+            continue
+
         logger.debug("cd 到 repo 文件夹: " + os.getcwd())
         for remote_branch in branchs:
             cmd = ("git branch --track {local_branch} {remote_branch}"
@@ -75,9 +89,15 @@ def clone_repo(repo_list):
             excute(cmd=cmd)
         excute(cmd="git fetch --all")
         excute(cmd="git pull --all")
-        os.chdir("..")
+        os.chdir("../..")
         logger.debug("cd 到主文件夹: " + os.getcwd())
-        logger.info("repo {dir_name} clone 完毕\n".format(dir_name=dir_name))
+
+        logger.debug("开始压缩 {dir_path}".format(dir_path=dir_path))
+        zip_path = "{dir_path}".format(dir_path=dir_path)
+        name = "{dir_path} @ {sha1}".format(dir_path=dir_path, sha1=sha1)
+        make_archive(base_name=name, format="zip", root_dir=zip_path)
+        excute(cmd="rm -rf {dir_path}".format(dir_path=dir_path))
+        logger.info("repo {dir_name} clone 完毕\n\n".format(dir_name=dir_name))
     return None
 
 
@@ -112,4 +132,5 @@ def create_logger(debug):
 
 repo_list = get_repo_list()
 create_logger(debug=1)
+# repo_list = [(".".join(z.split("/")[-2:]), z) for z in ["https://github.com/Drake-Z/drake-z.github.io"]]
 clone_repo(repo_list=repo_list)
