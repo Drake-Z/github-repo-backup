@@ -18,12 +18,11 @@ install:
     - sudo /home/travis/virtualenv/python3.6.3/bin/python -m pip install -r requirements.txt
     - pip list
     - ls
-    - sudo git lfs install
 
 script:
-    - git "$HOME/.gitconfig" --global user.email "$GIT_EMAIL"
-    - git "$HOME/.gitconfig" --global user.name "$GIT_NAME"
-    - git "$HOME/.gitconfig" --global push.default simple
+    - git config --global user.email "$GIT_EMAIL"
+    - git config --global user.name "$GIT_NAME"
+    - git config --global push.default simple
     - git checkout repos-source
     - git clone --depth 1 -b repos-backup https://$GH_TOKEN@github.com/$GH_REPO_SLUG repos-backup
     - cd repos-backup
@@ -35,6 +34,7 @@ script:
     # 输出最后一次 commit 到文件
     - git show -1 -s --format="$(echo %B$'\n'%H)" > commit-msg.tmp
     - cd repos-backup
+    - sudo git lfs install
     - git lfs track "*.zip"
     - git add -A .
     - git commit -F ../commit-msg.tmp
