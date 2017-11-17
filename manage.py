@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-17 09:57:04
+# @Last Modified time: 2017-11-17 10:02:39
 
 import os
 import yaml
@@ -95,7 +95,7 @@ def clone_repo(repo_list):
 
         excute(cmd="rm -rf {dir_path}*zip".format(dir_path=dir_path))
         name = ("{dir_path} @ {sha1} {date}"
-                ).format(dir_path=dir_path, sha1=sha1, date=str(datetime.now()).replace(":", "."))
+                ).format(dir_path=dir_path, sha1=sha1, date=str(datetime.now())[:-10].replace(":", "."))
         logger.debug("开始压缩 {dir_path}".format(dir_path=dir_path))
         make_archive(base_name=name, format="zip", root_dir=dir_path)
         logger.debug("压缩 {name} 完毕".format(name=name))
