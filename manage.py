@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-17 13:57:51
+# @Last Modified time: 2017-11-17 14:00:28
 
 import os
 import yaml
@@ -32,7 +32,7 @@ def excute(cmd):
         line = str(line, encoding="utf-8")
         if line:
             print("[cmd] " + line.strip())
-    p.wait()
+    p.communicate()
     return None
 
 
