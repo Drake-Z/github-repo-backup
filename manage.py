@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-17 15:26:22
+# @Last Modified time: 2017-11-17 15:52:17
 
 import os
 import yaml
@@ -95,7 +95,6 @@ def clone_repo(repo_list):
             excute(cmd=cmd)
         excute(cmd="git fetch --all")
         excute(cmd="git pull --all")
-        time.sleep(10)
         os.chdir("../..")
         logger.debug("已 cd 到主文件夹: " + os.getcwd())
 
@@ -111,7 +110,7 @@ def clone_repo(repo_list):
             cmd = ("zipsplit -n 99614720  -b {filepath} {zip_dir}"
                    ).format(filepath=filepath.replace(" ", "\ "), zip_dir=zip_dir.replace(" ", "\ "))
             excute(cmd=cmd)
-            time.sleep(5)
+            logger.debug("压缩文件夹下文件:\n" + str(os.listdir(zip_dir)))
             excute(cmd="rm -rf {filepath}".format(filepath=filepath.replace(" ", "\ ")))
             assert os.path.exists(filepath) is False, filepath + " 没有被删除"
 
