@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-17 14:46:46
+# @Last Modified time: 2017-11-17 15:06:17
 
 import os
 import yaml
@@ -66,7 +66,7 @@ def clone_repo(repo_list):
     :type return: NoneType
     :return: None
     """
-    excute(cmd="rm -rf manage.py")
+    excute(cmd="rm -rf repos-backup/manage.py")
     assert isinstance(repo_list, list)
     logger.debug("repo_list:\n" + yaml.dump(repo_list, default_flow_style=False) + "\n")
     logger.info("将 clone 以下 repo:\n" + "\n".join([z[0] for z in repo_list]))
@@ -108,7 +108,7 @@ def clone_repo(repo_list):
             zip_dir = filepath[:-4] + " zip"
             os.makedirs(zip_dir)
             cmd = ("zipsplit -n 99614720  -b {filepath} {zip_dir}"
-                   ).format(filepath=filepath, zip_dir=zip_dir)
+                   ).format(filepath=filepath.replace(" ", "\ "), zip_dir=zip_dir.replace(" ", "\ "))
             excute(cmd=cmd)
             time.sleep(5)
             excute(cmd="rm -rf {filepath}".format(filepath=filepath.replace(" ", "\ ")))
