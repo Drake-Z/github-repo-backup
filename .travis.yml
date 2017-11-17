@@ -26,10 +26,10 @@ script:
     - git checkout repos-source
     - git clone --depth 1 -b repos-backup https://$GH_TOKEN@github.com/$GH_REPO_SLUG repos-backup
     - python manage.py
+    - ls -F -lh ./repos-backup
 
 after_success:
     # 输出最后一次 commit 到文件
-    - git show -3
     - git show -1 -s --format="$(echo %B$'\n'%H)" > commit-msg.tmp
     - cd repos-backup
     - git config --local -l

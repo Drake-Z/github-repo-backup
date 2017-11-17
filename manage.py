@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-17 12:26:10
+# @Last Modified time: 2017-11-17 13:14:39
 
 import os
 import yaml
@@ -113,7 +113,8 @@ def clone_repo(repo_list):
 
         logger.debug("压缩 {dir_name} 完毕".format(dir_name=dir_name))
         excute(cmd="echo rm -rf {dir_path}".format(dir_path=dir_path))
-        excute(cmd="ls -F -lh ./repos-backup/")
+        if os.path.exists(dir_path):
+            raise Exception(dir_path + " 没有被删除")
 
         logger.info("repo {dir_name} clone 完毕\n\n".format(dir_name=dir_name))
     return None
