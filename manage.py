@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-17 13:23:25
+# @Last Modified time: 2017-11-17 13:56:34
 
 import os
 import yaml
@@ -32,6 +32,7 @@ def excute(cmd):
         line = str(line, encoding="utf-8")
         if line:
             print("[cmd] " + line.strip())
+    p.wait()
     return None
 
 
@@ -109,7 +110,7 @@ def clone_repo(repo_list):
                    ).format(filepath=filepath, zip_dir=zip_dir)
             excute(cmd=cmd)
             time.sleep(5)
-            excute(cmd="rm -rf {filepath}".format(filepath=filepath))
+            excute(cmd="rm -rf {filepath}".format(filepath=filepath.replace(" ", "\ ")))
             if os.path.exists(filepath):
                 raise Exception(filepath + " 没有被删除")
 
