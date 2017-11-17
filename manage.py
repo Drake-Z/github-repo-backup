@@ -2,7 +2,11 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-17 10:08:57
+<< << << < Updated upstream
+# @Last Modified time: 2017-11-17 10:26:39
+== == == =
+# @Last Modified time: 2017-11-17 09:48:03
+>>>>>> > Stashed changes
 
 import os
 import yaml
@@ -80,9 +84,10 @@ def clone_repo(repo_list):
         try:
             os.chdir(dir_path)
         except FileNotFoundError:
-            logger.info("{dir_name} 文件夹不存在！！克隆 {dir_name} 失败\n\n".format(dir_name=dir_name))
+            logger.info(("{dir_path} 文件夹不存在！！请确认 {dir_name} 项目没有删除。"
+                         "克隆 {dir_path} 失败\n\n"
+                         ).format(dir_path=dir_path, dir_name=dir_name))
             continue
-
         logger.debug("cd 到 repo 文件夹: " + os.getcwd())
         for remote_branch in branchs:
             cmd = ("git branch --track {local_branch} {remote_branch}"
@@ -91,18 +96,34 @@ def clone_repo(repo_list):
         excute(cmd="git fetch --all")
         excute(cmd="git pull --all")
         os.chdir("../..")
-        logger.debug("cd 到主文件夹: " + os.getcwd())
+        logger.debug("已 cd 到主文件夹: " + os.getcwd())
 
-        excute(cmd="echo rm -rf {dir_path}*zip".format(dir_path=dir_path))
-        name = ("{dir_path} @ {sha1} {date}"
-                ).format(dir_path=dir_path, sha1=sha1, date=str(datetime.now())[:-10].replace(":", "."))
-        logger.debug("开始压缩 {dir_path}".format(dir_path=dir_path))
-        make_archive(base_name=name, format="zip", root_dir=dir_path)
+        logger.debug("cd 到主文件夹: " + os.getcwd())
+        excute(cmd="rm -rf {dir_path}*zip".format(dir_path=dir_path))
+        logger.debug("{dir_name} 删除之前的压缩包".format(dir_name=dir_name))
+        filepath = zip_repo(dir_path=dir_path, sha1=sha1)
+
+        if os.path.getsize(filepath) / 1024 / 1024 > 95:
+            zip_dir = filepath[:-4] + " zip"
+            os.makedirs(zip_dir)
+            cmd = ("zipfile -n 99614720  -b {filepath} {zip_dir}"
+                   ).format(filepath=filepath, zip_dir=zip_dir)
+            excute(cmd=cmd)
+            excute(cmd="rm -rf {filepath}".format(filepath=filepath))
         logger.debug("压缩 {name} 完毕".format(name=name))
-        excute(cmd="echo rm -rf {dir_path}".format(dir_path=dir_path))
+        excute(cmd="rm -rf {dir_path}".format(dir_path=dir_path))
 
         logger.info("repo {dir_name} clone 完毕\n\n".format(dir_name=dir_name))
     return None
+
+
+def zip_repo(dir_path, sha1):
+    logger.debug("开始压缩 {dir_path}".format(dir_path=dir_path))
+    name = ("{dir_path} @ {sha1} {date}"
+            ).format(dir_path=dir_path, sha1=sha1, date=str(datetime.now()).replace(":", "."))
+    make_archive(base_name=name, format="zip", root_dir=dir_path)
+    logger.debug("{dir_path} 压缩完毕".format(dir_path=dir_path))
+    return name
 
 
 def get_repo_list():
