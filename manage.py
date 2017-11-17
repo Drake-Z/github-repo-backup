@@ -2,15 +2,15 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-16 23:17:40
+# @Last Modified time: 2017-11-17 09:57:04
 
 import os
-import sys
 import yaml
 import subprocess
 import logging
 from git import Repo
 from shutil import make_archive
+from datetime import datetime
 
 
 def excute(cmd):
@@ -69,11 +69,12 @@ def clone_repo(repo_list):
     logger.info("将 clone 以下 repo:\n" + "\n".join([z[0] for z in repo_list]))
     for dir_name, repo_url in repo_list:
         logger.info("clone repo: {dir_name}".format(dir_name=dir_name))
-        cmd = ("git submodule add --force {repo_url} ./repos-backup/{dir_name}"
-               ).format(repo_url=repo_url, dir_name=dir_name)
+        dir_path = "repos-backup/{dir_name}".format(dir_name=dir_name)
+
+        cmd = ("git submodule add --force {repo_url} {dir_path}"
+               ).format(repo_url=repo_url, dir_path=dir_path)
         excute(cmd=cmd)
 
-        dir_path = "repos-backup/{dir_name}".format(dir_name=dir_name)
         logger.debug("clone {dir_name} other branch".format(dir_name=dir_name))
         branchs, sha1 = match_branch(dir_path=dir_path)
         try:
@@ -92,11 +93,14 @@ def clone_repo(repo_list):
         os.chdir("../..")
         logger.debug("cd 到主文件夹: " + os.getcwd())
 
+        excute(cmd="rm -rf {dir_path}*zip".format(dir_path=dir_path))
+        name = ("{dir_path} @ {sha1} {date}"
+                ).format(dir_path=dir_path, sha1=sha1, date=str(datetime.now()).replace(":", "."))
         logger.debug("开始压缩 {dir_path}".format(dir_path=dir_path))
-        zip_path = "{dir_path}".format(dir_path=dir_path)
-        name = "{dir_path} @ {sha1}".format(dir_path=dir_path, sha1=sha1)
-        make_archive(base_name=name, format="zip", root_dir=zip_path)
+        make_archive(base_name=name, format="zip", root_dir=dir_path)
+        logger.debug("压缩 {name} 完毕".format(name=name))
         excute(cmd="rm -rf {dir_path}".format(dir_path=dir_path))
+
         logger.info("repo {dir_name} clone 完毕\n\n".format(dir_name=dir_name))
     return None
 
