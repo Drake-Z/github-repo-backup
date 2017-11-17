@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-17 13:17:01
+# @Last Modified time: 2017-11-17 13:23:25
 
 import os
 import yaml
@@ -96,7 +96,7 @@ def clone_repo(repo_list):
         os.chdir("../..")
         logger.debug("已 cd 到主文件夹: " + os.getcwd())
 
-        excute(cmd="echo rm -rf {dir_path}*zip".format(dir_path=dir_path))
+        excute(cmd="rm -rf {dir_path}*zip".format(dir_path=dir_path))
         logger.debug("{dir_name} 删除之前的压缩包".format(dir_name=dir_name))
         filepath = zip_repo(dir_path=dir_path, sha1=sha1) + ".zip"
 
@@ -109,12 +109,12 @@ def clone_repo(repo_list):
                    ).format(filepath=filepath, zip_dir=zip_dir)
             excute(cmd=cmd)
             time.sleep(5)
-            excute(cmd="echo rm -rf {filepath}".format(filepath=filepath))
+            excute(cmd="rm -rf {filepath}".format(filepath=filepath))
             if os.path.exists(filepath):
                 raise Exception(filepath + " 没有被删除")
 
         logger.debug("压缩 {dir_name} 完毕".format(dir_name=dir_name))
-        excute(cmd="echo rm -rf {dir_path}".format(dir_path=dir_path))
+        excute(cmd="rm -rf {dir_path}".format(dir_path=dir_path))
         if os.path.exists(dir_path):
             raise Exception(dir_path + " 没有被删除")
 
