@@ -2,11 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-<< << << < Updated upstream
-# @Last Modified time: 2017-11-17 10:39:01
-== == == =
-# @Last Modified time: 2017-11-17 09:48:03
->>>>>> > Stashed changes
+# @Last Modified time: 2017-11-17 10:42:40
 
 import os
 import yaml
