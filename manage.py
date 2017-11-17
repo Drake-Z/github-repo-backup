@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-17 13:14:39
+# @Last Modified time: 2017-11-17 13:17:01
 
 import os
 import yaml
@@ -110,6 +110,8 @@ def clone_repo(repo_list):
             excute(cmd=cmd)
             time.sleep(5)
             excute(cmd="echo rm -rf {filepath}".format(filepath=filepath))
+            if os.path.exists(filepath):
+                raise Exception(filepath + " 没有被删除")
 
         logger.debug("压缩 {dir_name} 完毕".format(dir_name=dir_name))
         excute(cmd="echo rm -rf {dir_path}".format(dir_path=dir_path))
