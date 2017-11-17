@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-17 11:42:38
+# @Last Modified time: 2017-11-17 12:16:14
 
 import os
 import yaml
@@ -100,6 +100,7 @@ def clone_repo(repo_list):
         logger.debug("{dir_name} 删除之前的压缩包".format(dir_name=dir_name))
         filepath = zip_repo(dir_path=dir_path, sha1=sha1) + ".zip"
 
+        logger.debug("压缩包 大小: {size:.2}".format(size=os.path.getsize(filepath) / 1024 / 1024))
         if os.path.getsize(filepath) / 1024 / 1024 > 95:
             zip_dir = filepath[:-4] + " zip"
             os.makedirs(zip_dir)
@@ -108,6 +109,7 @@ def clone_repo(repo_list):
             excute(cmd=cmd)
             time.sleep(5)
             excute(cmd="echo rm -rf {filepath}".format(filepath=filepath))
+
         logger.debug("压缩 {dir_name} 完毕".format(dir_name=dir_name))
         excute(cmd="echo rm -rf {dir_path}".format(dir_path=dir_path))
         excute(cmd="ls -F -lh /repos-backup")
