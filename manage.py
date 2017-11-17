@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-17 11:03:42
+# @Last Modified time: 2017-11-17 11:42:38
 
 import os
 import yaml
@@ -11,6 +11,7 @@ import logging
 from git import Repo
 from shutil import make_archive
 from datetime import datetime
+import time
 
 
 def excute(cmd):
@@ -91,13 +92,13 @@ def clone_repo(repo_list):
             excute(cmd=cmd)
         excute(cmd="git fetch --all")
         excute(cmd="git pull --all")
+        time.sleep(10)
         os.chdir("../..")
         logger.debug("已 cd 到主文件夹: " + os.getcwd())
 
-        logger.debug("cd 到主文件夹: " + os.getcwd())
         excute(cmd="echo rm -rf {dir_path}*zip".format(dir_path=dir_path))
         logger.debug("{dir_name} 删除之前的压缩包".format(dir_name=dir_name))
-        filepath = zip_repo(dir_path=dir_path, sha1=sha1)
+        filepath = zip_repo(dir_path=dir_path, sha1=sha1) + ".zip"
 
         if os.path.getsize(filepath) / 1024 / 1024 > 95:
             zip_dir = filepath[:-4] + " zip"
@@ -105,6 +106,7 @@ def clone_repo(repo_list):
             cmd = ("zipfile -n 99614720  -b {filepath} {zip_dir}"
                    ).format(filepath=filepath, zip_dir=zip_dir)
             excute(cmd=cmd)
+            time.sleep(5)
             excute(cmd="echo rm -rf {filepath}".format(filepath=filepath))
         logger.debug("压缩 {dir_name} 完毕".format(dir_name=dir_name))
         excute(cmd="echo rm -rf {dir_path}".format(dir_path=dir_path))
