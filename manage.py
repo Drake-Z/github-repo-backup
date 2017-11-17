@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-17 20:01:53
+# @Last Modified time: 2017-11-17 20:15:07
 
 import os
 import yaml
@@ -125,7 +125,7 @@ def export_repo(dir_name, dir_path, sha1):
     filename = ("{dir_name}_@{sha1}_{date}.bundle"
                 ).format(dir_name=dir_name,
                          sha1=sha1,
-                         date=str(datetime.now())[:-10].replace(":", "_"))
+                         date=str(datetime.now())[:-10].replace(":", "_").replace(" ", "_"))
     # py_zip_file.main(zip_path=[dir_path], zip_name=name)
     os.chdir(dir_path)
     cmd = "git bundle create ../{filename} --all".format(filename=filename)
