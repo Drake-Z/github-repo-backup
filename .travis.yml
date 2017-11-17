@@ -25,8 +25,8 @@ script:
     - git config --global push.default simple
     - git checkout repos-source
     - git clone --depth 1 -b repos-backup https://$GH_TOKEN@github.com/$GH_REPO_SLUG repos-backup
-    - shopt -s extglob
-    - rm -rf repos-backup/*zip
+    # - shopt -s extglob
+    # - rm -rf repos-backup/*bundle
     - python manage.py
     - ls -F -lh ./repos-backup
 
