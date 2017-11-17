@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-17 16:07:53
+# @Last Modified time: 2017-11-17 16:58:17
 
 import os
 import yaml
@@ -127,7 +127,9 @@ def zip_repo(dir_path, sha1):
     logger.debug("开始压缩 {dir_path}".format(dir_path=dir_path))
     name = ("{dir_path} @ {sha1} {date}"
             ).format(dir_path=dir_path, sha1=sha1, date=str(datetime.now())[:-10].replace(":", "."))
-    py_zip_file.main(zip_path=[dir_path], zip_name=name)
+    # py_zip_file.main(zip_path=[dir_path], zip_name=name)
+    cmd = "zip -r9 {name}.zip {dir_path}/*".format(name=name.replace(" ", "\ "), dir_path=dir_path)
+    excute(cmd=cmd)
     logger.debug("{dir_path} 压缩完毕".format(dir_path=dir_path))
     return name
 
