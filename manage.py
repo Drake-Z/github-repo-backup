@@ -3,7 +3,7 @@
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
 << << << < Updated upstream
-# @Last Modified time: 2017-11-17 10:26:39
+# @Last Modified time: 2017-11-17 10:39:01
 == == == =
 # @Last Modified time: 2017-11-17 09:48:03
 >>>>>> > Stashed changes
@@ -99,7 +99,7 @@ def clone_repo(repo_list):
         logger.debug("已 cd 到主文件夹: " + os.getcwd())
 
         logger.debug("cd 到主文件夹: " + os.getcwd())
-        excute(cmd="rm -rf {dir_path}*zip".format(dir_path=dir_path))
+        excute(cmd="echo rm -rf {dir_path}*zip".format(dir_path=dir_path))
         logger.debug("{dir_name} 删除之前的压缩包".format(dir_name=dir_name))
         filepath = zip_repo(dir_path=dir_path, sha1=sha1)
 
@@ -109,9 +109,10 @@ def clone_repo(repo_list):
             cmd = ("zipfile -n 99614720  -b {filepath} {zip_dir}"
                    ).format(filepath=filepath, zip_dir=zip_dir)
             excute(cmd=cmd)
-            excute(cmd="rm -rf {filepath}".format(filepath=filepath))
+            excute(cmd="echo rm -rf {filepath}".format(filepath=filepath))
         logger.debug("压缩 {name} 完毕".format(name=name))
-        excute(cmd="rm -rf {dir_path}".format(dir_path=dir_path))
+        excute(cmd="echo rm -rf {dir_path}".format(dir_path=dir_path))
+        excute(cmd="ls -F -lh /repos-backup")
 
         logger.info("repo {dir_name} clone 完毕\n\n".format(dir_name=dir_name))
     return None
