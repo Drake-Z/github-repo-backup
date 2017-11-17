@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-17 15:53:28
+# @Last Modified time: 2017-11-17 16:07:53
 
 import os
 import yaml
@@ -107,7 +107,7 @@ def clone_repo(repo_list):
         if int(os.path.getsize(filepath) / 1024 / 1024) > 95:
             zip_dir = filepath[:-4] + " zip"
             os.makedirs(zip_dir)
-            cmd = ("zipsplit -n 99614720  -b {filepath} {zip_dir}"
+            cmd = ("zipsplit -n 99614720  -b {zip_dir} {filepath}"
                    ).format(filepath=filepath.replace(" ", "\ "), zip_dir=zip_dir.replace(" ", "\ "))
             excute(cmd=cmd)
             logger.debug("压缩文件夹下文件:\n" + str(os.listdir(zip_dir)))
