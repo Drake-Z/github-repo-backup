@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-17 12:16:14
+# @Last Modified time: 2017-11-17 12:26:10
 
 import os
 import yaml
@@ -100,8 +100,9 @@ def clone_repo(repo_list):
         logger.debug("{dir_name} 删除之前的压缩包".format(dir_name=dir_name))
         filepath = zip_repo(dir_path=dir_path, sha1=sha1) + ".zip"
 
-        logger.debug("压缩包 大小: {size:.2}".format(size=os.path.getsize(filepath) / 1024 / 1024))
-        if os.path.getsize(filepath) / 1024 / 1024 > 95:
+        logger.debug("压缩包大小: {size}".format(size=int(os.path.getsize(filepath) / 1024 / 1024)))
+        logger.debug("是否分割: {bool}".format(bool=int(os.path.getsize(filepath) / 1024 / 1024) > 95))
+        if int(os.path.getsize(filepath) / 1024 / 1024) > 95:
             zip_dir = filepath[:-4] + " zip"
             os.makedirs(zip_dir)
             cmd = ("zipfile -n 99614720  -b {filepath} {zip_dir}"
@@ -112,7 +113,7 @@ def clone_repo(repo_list):
 
         logger.debug("压缩 {dir_name} 完毕".format(dir_name=dir_name))
         excute(cmd="echo rm -rf {dir_path}".format(dir_path=dir_path))
-        excute(cmd="ls -F -lh /repos-backup")
+        excute(cmd="ls -F -lh ./repos-backup/")
 
         logger.info("repo {dir_name} clone 完毕\n\n".format(dir_name=dir_name))
     return None
