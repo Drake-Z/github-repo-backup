@@ -2,16 +2,17 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-17 15:17:47
+# @Last Modified time: 2017-11-17 15:26:22
 
 import os
 import yaml
 import subprocess
 import logging
 from git import Repo
-from shutil import make_archive
 from datetime import datetime
 import time
+
+import py_zip_file
 
 
 def excute(cmd):
@@ -126,8 +127,7 @@ def zip_repo(dir_path, sha1):
     logger.debug("开始压缩 {dir_path}".format(dir_path=dir_path))
     name = ("{dir_path} @ {sha1} {date}"
             ).format(dir_path=dir_path, sha1=sha1, date=str(datetime.now())[:-10].replace(":", "."))
-    cmd = "zip -r9 {name}.zip {dir_path}".format(name=name, dir_path=dir_path)
-    excute(cmd=cmd)
+    py_zip_file.main(zip_path=[dir_path], zip_name=name)
     logger.debug("{dir_path} 压缩完毕".format(dir_path=dir_path))
     return name
 
