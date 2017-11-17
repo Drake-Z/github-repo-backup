@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-17 10:42:40
+# @Last Modified time: 2017-11-17 10:49:31
 
 import os
 import yaml
@@ -106,7 +106,7 @@ def clone_repo(repo_list):
                    ).format(filepath=filepath, zip_dir=zip_dir)
             excute(cmd=cmd)
             excute(cmd="echo rm -rf {filepath}".format(filepath=filepath))
-        logger.debug("压缩 {name} 完毕".format(name=name))
+        logger.debug("压缩 {dir_name} 完毕".format(dir_name=dir_name))
         excute(cmd="echo rm -rf {dir_path}".format(dir_path=dir_path))
         excute(cmd="ls -F -lh /repos-backup")
 
