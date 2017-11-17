@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-10-10 16:51:33
-# @Last Modified time: 2017-11-17 15:26:56
+# @Last Modified time: 2017-11-17 15:32:53
 
 """
 py-zip-file 压缩指定文件/目录到指定目录。
@@ -40,11 +40,10 @@ def zip_prepare(path):
                 filepath = os.path.join(dirpath, filename)
                 # 截取相对路径
                 relative_path = filepath[relative:]
-                # 在文件路径前面加上 \\?\ 可以处理路径名过长的问题
-                zip_list.append(["\\\\?\\" + z for z in (filepath, relative_path)])
+                zip_list.append((filepath, relative_path))
     else:
         relative_path = path[relative:].strip(os.path.sep)
-        zip_list.append(["\\\\?\\" + z for z in (path, relative_path)])
+        zip_list.append((path, relative_path))
     return zip_list
 
 
