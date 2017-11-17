@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-17 10:02:39
+# @Last Modified time: 2017-11-17 10:08:57
 
 import os
 import yaml
@@ -93,13 +93,13 @@ def clone_repo(repo_list):
         os.chdir("../..")
         logger.debug("cd 到主文件夹: " + os.getcwd())
 
-        excute(cmd="rm -rf {dir_path}*zip".format(dir_path=dir_path))
+        excute(cmd="echo rm -rf {dir_path}*zip".format(dir_path=dir_path))
         name = ("{dir_path} @ {sha1} {date}"
                 ).format(dir_path=dir_path, sha1=sha1, date=str(datetime.now())[:-10].replace(":", "."))
         logger.debug("开始压缩 {dir_path}".format(dir_path=dir_path))
         make_archive(base_name=name, format="zip", root_dir=dir_path)
         logger.debug("压缩 {name} 完毕".format(name=name))
-        excute(cmd="rm -rf {dir_path}".format(dir_path=dir_path))
+        excute(cmd="echo rm -rf {dir_path}".format(dir_path=dir_path))
 
         logger.info("repo {dir_name} clone 完毕\n\n".format(dir_name=dir_name))
     return None
