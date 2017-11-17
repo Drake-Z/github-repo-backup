@@ -26,9 +26,7 @@ script:
     - git checkout repos-source
     - git clone --depth 1 -b repos-backup https://$GH_TOKEN@github.com/$GH_REPO_SLUG repos-backup
     - shopt -s extglob
-    - cd repos-backup
-    - rm -rf ./!(README.md|\.git)
-    - cd ..
+    - rm -rf repos-backup/!(README.md|.git)
     - python manage.py
     - ls -F -lh ./repos-backup
 
