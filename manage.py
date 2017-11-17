@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-17 15:52:17
+# @Last Modified time: 2017-11-17 15:53:28
 
 import os
 import yaml
@@ -111,6 +111,7 @@ def clone_repo(repo_list):
                    ).format(filepath=filepath.replace(" ", "\ "), zip_dir=zip_dir.replace(" ", "\ "))
             excute(cmd=cmd)
             logger.debug("压缩文件夹下文件:\n" + str(os.listdir(zip_dir)))
+            assert bool(os.listdir(zip_dir)) is True, "压缩文件夹下没有文件！"
             excute(cmd="rm -rf {filepath}".format(filepath=filepath.replace(" ", "\ ")))
             assert os.path.exists(filepath) is False, filepath + " 没有被删除"
 
