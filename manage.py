@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-17 20:15:07
+# @Last Modified time: 2017-11-18 21:23:45
 
 import os
 import yaml
@@ -10,9 +10,7 @@ import subprocess
 import logging
 from git import Repo
 from datetime import datetime
-import time
-
-import py_zip_file
+import pytz
 
 
 def excute(cmd):
@@ -122,10 +120,12 @@ def export_repo(dir_name, dir_path, sha1):
     excute(cmd="rm -rf {dir_path}*bundle".format(dir_path=dir_path))
     logger.debug("{dir_name} 删除之前的导出包".format(dir_name=dir_name))
     logger.debug("开始导出 {dir_path}".format(dir_path=dir_path))
+    zone = pytz.timezone("Asia/Shanghai")
+    timenow = datetime.now(tzinfo=zone).strftime("'%Y-%m-%d_%H.%M")
     filename = ("{dir_name}_@{sha1}_{date}.bundle"
                 ).format(dir_name=dir_name,
                          sha1=sha1,
-                         date=str(datetime.now())[:-10].replace(":", "_").replace(" ", "_"))
+                         date=timenow)
     # py_zip_file.main(zip_path=[dir_path], zip_name=name)
     os.chdir(dir_path)
     cmd = "git bundle create ../{filename} --all".format(filename=filename)
