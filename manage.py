@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2018-01-20 16:53:12
+# @Last Modified time: 2018-01-20 16:57:51
 
 import os
 import yaml
@@ -127,6 +127,7 @@ def export_repo(dir_name, dir_path, sha1):
     os.chdir(dir_path)
     cmd = f"git bundle create ../{filename} --all"
     excute(cmd=cmd)
+    logger.debug(f"已导出包: {filename}")
     logger.debug(f"{os.path.realpath('../{filename}')} 导出完毕")
     os.chdir("../..")
     return filename
