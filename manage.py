@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2018-01-20 16:28:39
+# @Last Modified time: 2018-01-20 16:46:47
 
 import os
 import yaml
@@ -48,7 +48,7 @@ def match_branch(dir_path):
         else:
             return False
     logger.debug("GitPython 加载 {dir_name}".format(dir_name=dir_path.split("/")[-1]))
-    repo = Repo("{dir_path}".format(dir_path=dir_path))
+    repo = Repo(f"{dir_path}")
     git = repo.git
     sha1 = repo.commit("HEAD").hexsha[:7]
     branch_str = git.branch("-a")
@@ -70,14 +70,14 @@ def clone_repo(repo_list):
     logger.debug("repo_list:\n" + yaml.dump(repo_list, default_flow_style=False) + "\n")
     logger.info("将 clone 以下 repo:\n" + "\n".join([z[0] for z in repo_list]))
     for dir_name, repo_url in repo_list:
-        logger.info("clone repo: {dir_name}".format(dir_name=dir_name))
-        dir_path = "repos-backup/{dir_name}".format(dir_name=dir_name)
+        logger.info(f"clone repo: {dir_name}")
+        dir_path = f"repos-backup/{dir_name}"
 
         cmd = ("git submodule add --force {repo_url} {dir_path}"
                ).format(repo_url=repo_url, dir_path=dir_path)
         excute(cmd=cmd)
 
-        logger.debug("clone {dir_name} other branch".format(dir_name=dir_name))
+        logger.debug(f"clone {dir_name} other branch")
         try:
             sha1 = pull_other_branch(dir_name=dir_name, dir_path=dir_path)
         except Exception as e:
@@ -85,9 +85,9 @@ def clone_repo(repo_list):
             continue
 
         filename = export_repo(dir_name=dir_name, dir_path=dir_path, sha1=sha1)
-        filepath = "repos-backup/{filename}".format(filename=filename)
-        logger.debug("导出 {dir_name} 完毕".format(dir_name=dir_name))
-        excute(cmd="rm -rf {dir_path}".format(dir_path=dir_path))
+        filepath = f"repos-backup/{filename}"
+        logger.debug(f"导出 {dir_name} 完毕")
+        excute(cmd=f"rm -rf {dir_path}")
         split_file(dir_name=dir_name, filepath=filepath)
 
         assert os.path.exists(dir_path) is False, dir_path + " 没有被删除"
@@ -117,21 +117,18 @@ def pull_other_branch(dir_name, dir_path):
 
 
 def export_repo(dir_name, dir_path, sha1):
-    excute(cmd="rm -rf {dir_path}*bundle".format(dir_path=dir_path))
-    logger.debug("{dir_name} 删除之前的导出包".format(dir_name=dir_name))
-    logger.debug("开始导出 {dir_path}".format(dir_path=dir_path))
+    excute(cmd=f"rm -rf {dir_path}*bundle")
+    logger.debug(f"{dir_name} 删除之前的导出包")
+    logger.debug(f"开始导出 {dir_path}")
     zone = pytz.timezone("Asia/Shanghai")
     timenow = datetime.now(tz=zone).strftime("'%Y-%m-%d_%H.%M")
-    filename = ("{dir_name}_@{sha1}_{date}.bundle"
-                ).format(dir_name=dir_name,
-                         sha1=sha1,
-                         date=timenow)
+    filename = f"{dir_name}_@{sha1}_{timenow}.bundle"
     # py_zip_file.main(zip_path=[dir_path], zip_name=name)
     os.chdir(dir_path)
-    cmd = "git bundle create ../{filename} --all".format(filename=filename)
+    cmd = f"git bundle create ../{filename} --all"
     excute(cmd=cmd)
     os.chdir("../..")
-    logger.debug("{dir_path} 导出完毕".format(dir_path=dir_path))
+    logger.debug(f"{os.path.realpath('../{filename}')} 导出完毕")
     return filename
 
 
@@ -148,7 +145,7 @@ def split_file(dir_name, filepath):
         excute(cmd=cmd)
         logger.debug("导出文件夹下文件:\n" + str(os.listdir(zip_dir)))
         assert bool(os.listdir(zip_dir)) is True, "导出文件夹下没有文件！"
-        excute(cmd="rm -rf {filepath}".format(filepath=filepath))
+        excute(cmd=f"rm -rf {filepath}")
         assert os.path.exists(filepath) is False, filepath + " 没有被删除"
 
 
@@ -174,7 +171,7 @@ def create_logger(debug):
     """
     logging.basicConfig(format=("[%(asctime)s %(levelname)s "
                                 "module:%(module)s func:%(funcName)s line:%(lineno)d]\n"
-                                " %(message)s"),
+                                "    %(message)s"),
                         datefmt="%H:%M:%S",)
     global logger
     logger = logging.getLogger(__name__)
