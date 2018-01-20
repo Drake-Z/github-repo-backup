@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2017-11-18 21:23:45
+# @Last Modified time: 2018-01-20 16:28:39
 
 import os
 import yaml
@@ -121,7 +121,7 @@ def export_repo(dir_name, dir_path, sha1):
     logger.debug("{dir_name} 删除之前的导出包".format(dir_name=dir_name))
     logger.debug("开始导出 {dir_path}".format(dir_path=dir_path))
     zone = pytz.timezone("Asia/Shanghai")
-    timenow = datetime.now(tzinfo=zone).strftime("'%Y-%m-%d_%H.%M")
+    timenow = datetime.now(tz=zone).strftime("'%Y-%m-%d_%H.%M")
     filename = ("{dir_name}_@{sha1}_{date}.bundle"
                 ).format(dir_name=dir_name,
                          sha1=sha1,
