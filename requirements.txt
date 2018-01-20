@@ -6,3 +6,6 @@ GitPython == 2.1.7
 
 # manage.py: 9
 PyYAML == 3.12
+
+# manage.py: 9
+pytz == 2017.2

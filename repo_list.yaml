@@ -42,6 +42,9 @@
 # Shadowsocks-libev for OpenWrt/LEDE
 - https://github.com/shadowsocks/openwrt-shadowsocks
 
+# fqrouter anti-GFW router http://fqrouter.com 移动 APK
+- https://github.com/fqrouter/fqrouter
+
 # GFW.Press 新一代军用级高强度加密抗干扰网络数据高速传输软件
 - https://github.com/chinashiyu/gfw.press
 # 使用 Linux 脚本一键快速搭建自己的 IPsec VPN 服务器, with IPsec/L2TP and Cisco IPsec on Ubuntu, Debian and CentOS
@@ -54,9 +57,6 @@
 - https://github.com/XetRAHF/TiZi_AcrossTheGreatWall
 # ZeroNet - Decentralized websites using Bitcoin crypto and BitTorrent network https://zeronet.io
 - https://github.com/HelloZeroNet/ZeroNet
-
-# fqrouter anti-GFW router http://fqrouter.com 移动 APK
-- https://github.com/fqrouter/fqrouter
 
 
 
