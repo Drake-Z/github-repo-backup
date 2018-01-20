@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Drake-Z
 # @Date:   2017-11-15 21:00:45
-# @Last Modified time: 2018-01-20 16:57:51
+# @Last Modified time: 2018-01-20 17:02:44
 
 import os
 import yaml
@@ -86,7 +86,6 @@ def clone_repo(repo_list):
 
         filename = export_repo(dir_name=dir_name, dir_path=dir_path, sha1=sha1)
         filepath = f"repos-backup/{filename}"
-        logger.debug(f"导出 {dir_name} 完毕")
         excute(cmd=f"rm -rf {dir_path}")
         split_file(dir_name=dir_name, filepath=filepath)
 
@@ -121,15 +120,15 @@ def export_repo(dir_name, dir_path, sha1):
     logger.debug(f"{dir_name} 删除之前的导出包")
     logger.debug(f"开始导出 {dir_path}")
     zone = pytz.timezone("Asia/Shanghai")
-    timenow = datetime.now(tz=zone).strftime("'%Y-%m-%d_%H.%M")
+    timenow = datetime.now(tz=zone).strftime("%Y-%m-%d_%H.%M")
     filename = f"{dir_name}_@{sha1}_{timenow}.bundle"
     # py_zip_file.main(zip_path=[dir_path], zip_name=name)
     os.chdir(dir_path)
     cmd = f"git bundle create ../{filename} --all"
     excute(cmd=cmd)
-    logger.debug(f"已导出包: {filename}")
-    logger.debug(f"{os.path.realpath('../{filename}')} 导出完毕")
+    logger.debug(f"{dir_path} 导出完毕")
     os.chdir("../..")
+    logger.debug("已 cd 到主文件夹: " + os.getcwd())
     return filename
 
 
